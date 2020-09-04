@@ -28,4 +28,10 @@ class HomeFragment : Fragment() {
         })
         return root
     }
+
+    override fun onResume() {
+        super.onResume()
+
+        homeViewModel.fetchStatus()
+    }
 }

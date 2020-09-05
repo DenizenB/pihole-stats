@@ -7,16 +7,16 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import retrofit2.Response
+import xyz.podd.piholecontrol.R
 import xyz.podd.piholecontrol.service.PiHoleControl
-import xyz.podd.piholecontrol.model.Status
+import xyz.podd.piholecontrol.service.Status
+import xyz.podd.piholecontrol.service.TopItems
 import java.io.InterruptedIOException
 
 class HomeViewModel : ViewModel() {
 
-    private val _status = MutableLiveData<String>().apply {
-        value = "This is home Fragment"
-    }
-    val status: LiveData<String> = _status
+    private val _status = MutableLiveData<HomeStatus>()
+    val status: LiveData<HomeStatus> = _status
 
     private val _toast = MutableLiveData<String>()
     val toast: LiveData<String> = _toast
@@ -28,10 +28,30 @@ class HomeViewModel : ViewModel() {
             throwable.printStackTrace()
 
             val message = when (throwable) {
-                is InterruptedIOException -> "Timed out"
+                is InterruptedIOException -> "Cannot reach Pi-hole"
                 else -> "Error: ${throwable.localizedMessage}"
             }
-            _toast.postValue(message)
+            _status.value = HomeStatus(R.drawable.ic_sentiment_very_dissatisfied_black_24dp, message)
+        }
+
+        viewModelScope.launch(exceptionHandler) {
+            val response: Response<Status> = service.getStatus()
+            if (response.isSuccessful && response.body() != null) {
+                val status = response.body()
+                if (status != null) {
+                    val drawable = when (status.enabled) {
+                        true -> R.drawable.ic_sentiment_very_satisfied_black_24dp
+                        else -> R.drawable.ic_sentiment_very_dissatisfied_black_24dp
+                    }
+
+                    val message = when (status.enabled) {
+                        true -> "Your Pi-hole is online"
+                        else -> "Your Pi-hole is disabled"
+                    }
+
+                    _status.value = HomeStatus(drawable, message)
+                }
+            }
         }
 
         viewModelScope.launch(exceptionHandler) {
@@ -42,3 +62,5 @@ class HomeViewModel : ViewModel() {
         }
     }
 }
+
+data class HomeStatus(val drawable: Int, val message: String)

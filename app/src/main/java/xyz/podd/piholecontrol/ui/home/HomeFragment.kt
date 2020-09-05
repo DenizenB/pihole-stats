@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -23,13 +24,19 @@ class HomeFragment : Fragment() {
         homeViewModel =
             ViewModelProviders.of(this).get(HomeViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_home, container, false)
-        val textView: TextView = root.findViewById(R.id.text_home)
+
+        val lblStatus: TextView = root.findViewById(R.id.text_status)
+        val imgStatus: ImageView = root.findViewById(R.id.image_status)
+
         homeViewModel.status.observe(viewLifecycleOwner, Observer {
-            textView.text = it
+            imgStatus.setImageDrawable(resources.getDrawable(it.drawable))
+            lblStatus.text = it.message
         })
+
         homeViewModel.toast.observe(viewLifecycleOwner, {
             Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
         })
+
         return root
     }
 

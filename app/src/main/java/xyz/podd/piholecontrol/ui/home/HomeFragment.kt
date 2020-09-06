@@ -4,12 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import xyz.podd.piholecontrol.R
 
 class HomeFragment : Fragment() {
@@ -21,28 +18,15 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        homeViewModel =
-            ViewModelProviders.of(this).get(HomeViewModel::class.java)
+        homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+
         val root = inflater.inflate(R.layout.fragment_home, container, false)
 
-        val lblStatus: TextView = root.findViewById(R.id.text_status)
-        val imgStatus: ImageView = root.findViewById(R.id.image_status)
-
-        homeViewModel.status.observe(viewLifecycleOwner, Observer {
-            imgStatus.setImageDrawable(resources.getDrawable(it.drawable))
-            lblStatus.text = it.message
-        })
-
-        homeViewModel.toast.observe(viewLifecycleOwner, {
-            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
-        })
+        parentFragmentManager.beginTransaction()
+            .add(R.id.layout_devices, DeviceFragment.newInstance("pi3", "https://192.168.1.251:8080/admin/", "<token>"))
+            .add(R.id.layout_devices, DeviceFragment.newInstance("pi2", "https://192.168.1.250:8080/admin/", "<token>"))
+            .commit()
 
         return root
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        homeViewModel.fetchStatus()
     }
 }

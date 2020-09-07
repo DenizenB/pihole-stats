@@ -2,5 +2,15 @@
     <string name="app_name">PiHole Control</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_settings">Settings</string>
+
+    <!-- Preferences -->
+    <string name="devices_header">Devices</string>
+
+    <string name="add_device_title">Add device</string>
+    <string name="name_title">Name</string>
+    <string name="url_title">Pi-hole URL</string>
+    <string name="password_title">Password</string>
+    <string name="verify_ssl_title">Verify SSL certificate</string>
+    <string name="save_title">Save</string>
 </resources>

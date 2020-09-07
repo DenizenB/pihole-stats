@@ -1,0 +1,17 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent">
+
+    <PreferenceCategory
+        app:title="@string/devices_header"
+        app:iconSpaceReserved="false">
+
+        <Preference
+            app:key="add_device"
+            app:summary="Add a new Pi-hole device to keep track of"
+            app:title="@string/add_device_title"
+            app:iconSpaceReserved="false"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

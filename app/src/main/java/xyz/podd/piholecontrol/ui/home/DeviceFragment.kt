@@ -13,12 +13,12 @@ import androidx.lifecycle.ViewModelProvider
 import xyz.podd.piholecontrol.R
 import xyz.podd.piholecontrol.model.Device
 
+private const val ARG_DEVICE = "device"
+
 class DeviceFragment : Fragment() {
     private lateinit var device: Device
 
     companion object {
-        const val ARG_DEVICE = "device"
-
         fun newInstance(device: Device): DeviceFragment {
             val fragment = DeviceFragment()
 

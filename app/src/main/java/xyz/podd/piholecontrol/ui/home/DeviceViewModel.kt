@@ -7,14 +7,15 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import xyz.podd.piholecontrol.R
+import xyz.podd.piholecontrol.model.Device
 import xyz.podd.piholecontrol.service.PiHoleControl
 
-class DeviceViewModel(private val url: String, private val authToken: String) : ViewModel() {
+class DeviceViewModel(private val device: Device) : ViewModel() {
     private val _summary = MutableLiveData<PiHoleSummary>()
     val summary: LiveData<PiHoleSummary> = _summary
 
     fun fetchStatus() {
-        val service = PiHoleControl().buildService(url)
+        val service = PiHoleControl().buildService(device.url)
 
         val exceptionHandler = CoroutineExceptionHandler{ _, throwable ->
             throwable.printStackTrace()
@@ -22,7 +23,7 @@ class DeviceViewModel(private val url: String, private val authToken: String) : 
         }
 
         viewModelScope.launch(exceptionHandler) {
-            val response = service.getSummary(authToken)
+            val response = service.getSummary(device.authToken)
             val status = response.body()
 
             if (status != null) {

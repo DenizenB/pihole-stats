@@ -4,10 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import xyz.podd.piholecontrol.R
+import xyz.podd.piholecontrol.model.Device
 
 class HomeFragment : Fragment() {
 
@@ -23,8 +23,8 @@ class HomeFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_home, container, false)
 
         parentFragmentManager.beginTransaction()
-            .add(R.id.layout_devices, DeviceFragment.newInstance("pi3", "https://192.168.1.251:8080/admin/", "<token>"))
-            .add(R.id.layout_devices, DeviceFragment.newInstance("pi2", "https://192.168.1.250:8080/admin/", "<token>"))
+            .add(R.id.layout_devices, DeviceFragment.newInstance(Device("pi3", "https://192.168.1.251:8080/admin/", "<password>")))
+            .add(R.id.layout_devices, DeviceFragment.newInstance(Device("pi2", "https://192.168.1.250:8080/admin/", "<password>")))
             .commit()
 
         return root

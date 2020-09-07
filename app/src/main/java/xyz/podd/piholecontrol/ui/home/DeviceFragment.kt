@@ -11,25 +11,19 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
 import xyz.podd.piholecontrol.R
-import java.lang.IllegalStateException
+import xyz.podd.piholecontrol.model.Device
 
 class DeviceFragment : Fragment() {
-    private lateinit var name: String
-    private lateinit var url: String
-    private lateinit var authToken: String
+    private lateinit var device: Device
 
     companion object {
-        const val ARG_NAME = "name"
-        const val ARG_URL = "url"
-        const val ARG_AUTH_TOKEN = "authToken"
+        const val ARG_DEVICE = "device"
 
-        fun newInstance(name: String, url: String, authToken: String): DeviceFragment {
+        fun newInstance(device: Device): DeviceFragment {
             val fragment = DeviceFragment()
 
             val args = Bundle()
-            args.putString(ARG_NAME, name)
-            args.putString(ARG_URL, url)
-            args.putString(ARG_AUTH_TOKEN, authToken)
+            args.putParcelable(ARG_DEVICE, device)
             fragment.arguments = args
 
             return fragment
@@ -42,12 +36,10 @@ class DeviceFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val args = arguments ?: throw IllegalStateException("No arguments provided to DeviceFragment")
-        name = args.getString(ARG_NAME) ?: throw IllegalStateException("Missing name in DeviceFragment arguments")
-        url = args.getString(ARG_URL) ?: throw IllegalStateException("Missing url in DeviceFragment arguments")
-        authToken = args.getString(ARG_AUTH_TOKEN) ?: throw IllegalStateException("Missing authToken in DeviceFragment arguments")
+        val args = requireArguments()
+        device = args.getParcelable(ARG_DEVICE)!!
 
-        viewModel = ViewModelProvider(this, DeviceViewModelFactory(url, authToken)).get(DeviceViewModel::class.java)
+        viewModel = ViewModelProvider(this, DeviceViewModelFactory(device)).get(DeviceViewModel::class.java)
 
         val root = inflater.inflate(R.layout.fragment_device, container, false)
         val lblName: TextView = root.findViewById(R.id.text_name)
@@ -56,7 +48,7 @@ class DeviceFragment : Fragment() {
         val lblQueries: TextView = root.findViewById(R.id.text_queries)
         val lblBlocked: TextView = root.findViewById(R.id.text_blocked)
 
-        lblName.text = name
+        lblName.text = device.name
         lblQueries.text = ""
         lblBlocked.text = ""
         lblToday.visibility = View.INVISIBLE
@@ -78,6 +70,6 @@ class DeviceFragment : Fragment() {
     }
 }
 
-class DeviceViewModelFactory(private val url: String, private val authToken: String): ViewModelProvider.NewInstanceFactory() {
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T = DeviceViewModel(url, authToken) as T
+class DeviceViewModelFactory(private val device: Device): ViewModelProvider.NewInstanceFactory() {
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T = DeviceViewModel(device) as T
 }

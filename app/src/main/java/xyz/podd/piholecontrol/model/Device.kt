@@ -2,15 +2,18 @@ package xyz.podd.piholecontrol.model
 
 import android.os.Parcel
 import android.os.Parcelable
+import kotlinx.serialization.Serializable
 import xyz.podd.piholecontrol.toSHA256
 
-data class Device(val name: String, val url: String, val password: String): Parcelable {
+@Serializable
+data class Device(val name: String, val url: String, val password: String, val verifySsl: Boolean = true): Parcelable {
     val authToken: String by lazy { password.toSHA256().toSHA256() }
 
     constructor(parcel: Parcel) : this(
         parcel.readString()!!,
         parcel.readString()!!,
-        parcel.readString()!!
+        parcel.readString()!!,
+        parcel.readValue(null) as Boolean
     )
 
     override fun describeContents(): Int = 0
@@ -19,6 +22,7 @@ data class Device(val name: String, val url: String, val password: String): Parc
         parcel.writeString(name)
         parcel.writeString(url)
         parcel.writeString(password)
+        parcel.writeValue(verifySsl)
     }
 
     companion object CREATOR : Parcelable.Creator<Device> {

@@ -4,6 +4,7 @@ import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFact
 import kotlinx.serialization.json.Json
 import okhttp3.*
 import retrofit2.Retrofit
+import xyz.podd.piholecontrol.model.Device
 import java.security.SecureRandom
 import java.security.cert.X509Certificate
 import java.util.concurrent.TimeUnit
@@ -13,26 +14,26 @@ import javax.net.ssl.SSLSession
 import javax.net.ssl.X509TrustManager
 
 class PiHoleControl {
-	fun buildService(url: String): PiHoleService {
+	fun buildService(device: Device): PiHoleService {
 		val jsonConverter = Json { ignoreUnknownKeys = true }
 			.asConverterFactory(MediaType.get("application/json"))
 
 		val retrofit = Retrofit.Builder()
-			.baseUrl(url)
+			.baseUrl(device.url)
 			.addConverterFactory(jsonConverter)
-			.client(buildClient())
+			.client(buildClient(device.verifySsl))
 			.build()
 
 		return retrofit.create(PiHoleService::class.java)
 	}
 
 	// https://stackoverflow.com/questions/37686625/disable-ssl-certificate-check-in-retrofit-library
-	private fun buildClient(ignoreSsl: Boolean = true): OkHttpClient {
+	private fun buildClient(verifySsl: Boolean): OkHttpClient {
 		val builder = OkHttpClient.Builder()
-			.callTimeout(1, TimeUnit.SECONDS)
+			.callTimeout(3, TimeUnit.SECONDS)
 			.cookieJar(SetCookieJar())
 
-		if (ignoreSsl) {
+		if (!verifySsl) {
 			val trustManager = TrustAllCerts()
 
 			val sslContext = SSLContext.getInstance("SSL")

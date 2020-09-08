@@ -2,20 +2,24 @@ package xyz.podd.piholecontrol.service
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import retrofit2.Response
+import okhttp3.RequestBody
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
 
 interface PiHoleService {
 	@GET("api.php?status")
-	suspend fun getStatus(): Response<Status>
+	suspend fun getStatus(): Status
 
 	@GET("api.php?summary")
-	suspend fun getSummary(@Query("auth") authToken: String): Response<Summary>
+	suspend fun getSummary(): Summary
 
 	@GET("api.php?topItems")
-	suspend fun getTopItems(@Query("auth") authToken: String): Response<TopItems>
+	suspend fun getTopItems(@Query("auth") authToken: String): TopItems
+
+	@POST("scripts/pi-hole/php/tailLog.php")
+	suspend fun getTailLogHeight(@Body body: RequestBody): String
 }
 
 @Serializable

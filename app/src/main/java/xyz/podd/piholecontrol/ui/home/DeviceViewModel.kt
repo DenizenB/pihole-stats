@@ -9,14 +9,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import xyz.podd.piholecontrol.R
 import xyz.podd.piholecontrol.model.Device
-import xyz.podd.piholecontrol.service.PiHoleControl
+import xyz.podd.piholecontrol.service.ServiceHelper
 
 class DeviceViewModel(private val device: Device) : ViewModel() {
     private val _summary = MutableLiveData<PiHoleSummary>()
     val summary: LiveData<PiHoleSummary> = _summary
 
     fun fetchStatus() {
-        val service = PiHoleControl().buildService(device)
+        val service = ServiceHelper().buildService(device)
 
         val exceptionHandler = CoroutineExceptionHandler{ _, throwable ->
             throwable.printStackTrace()

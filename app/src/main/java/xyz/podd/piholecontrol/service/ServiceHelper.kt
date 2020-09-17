@@ -13,7 +13,7 @@ import javax.net.ssl.SSLContext
 import javax.net.ssl.SSLSession
 import javax.net.ssl.X509TrustManager
 
-class PiHoleControl {
+class ServiceHelper {
 	fun buildService(device: Device): PiHoleService {
 		val jsonConverter = Json { ignoreUnknownKeys = true }
 			.asConverterFactory(MediaType.get("application/json"))

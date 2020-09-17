@@ -3,7 +3,7 @@ package xyz.podd.piholecontrol
 import java.security.MessageDigest
 
 fun String.toSHA256(): String {
-    val hash = MessageDigest.getInstance("SHA256").digest(this.toByteArray())
+    val hash = MessageDigest.getInstance("SHA-256").digest(this.toByteArray())
     return hash.toHex()
 }
 

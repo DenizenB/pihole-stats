@@ -16,14 +16,14 @@ import javax.net.ssl.SSLSession
 import javax.net.ssl.X509TrustManager
 
 @ExperimentalSerializationApi
-class ServiceHelper {
-	fun buildService(device: Device): PiHoleService {
-		val jsonConverter = Json { ignoreUnknownKeys = true }
-			.asConverterFactory(MediaType.get("application/json"))
+object ServiceHelper {
+	private val client by lazy { OkHttpClient.Builder().callTimeout(3, TimeUnit.SECONDS).build() }
+	private val jsonFactory by lazy { Json { ignoreUnknownKeys = true }.asConverterFactory(MediaType.get("application/json")) }
 
+	fun buildService(device: Device): PiHoleService {
 		val retrofit = Retrofit.Builder()
 			.baseUrl(device.url)
-			.addConverterFactory(jsonConverter)
+			.addConverterFactory(jsonFactory)
 			.client(buildClient(device.verifySsl))
 			.build()
 
@@ -32,8 +32,7 @@ class ServiceHelper {
 
 	// https://stackoverflow.com/questions/37686625/disable-ssl-certificate-check-in-retrofit-library
 	private fun buildClient(verifySsl: Boolean): OkHttpClient {
-		val builder = OkHttpClient.Builder()
-			.callTimeout(3, TimeUnit.SECONDS)
+		val builder = client.newBuilder()
 			.cookieJar(SetCookieJar())
 
 		if (!verifySsl) {
@@ -51,7 +50,7 @@ class ServiceHelper {
 	}
 }
 
-// If OkHttpClient is shared between multiple backends, then this implementation breaks.
+// If CookieJar is shared between multiple backends, then this implementation breaks.
 private class SetCookieJar: CookieJar {
 	private val _cookies: MutableSet<Cookie> = HashSet()
 

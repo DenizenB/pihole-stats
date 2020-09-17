@@ -16,7 +16,7 @@ class DeviceViewModel(private val device: Device) : ViewModel() {
     val summary: LiveData<PiHoleSummary> = _summary
 
     fun fetchStatus() {
-        val service = ServiceHelper().buildService(device)
+        val service = ServiceHelper.buildService(device)
 
         val exceptionHandler = CoroutineExceptionHandler{ _, throwable ->
             throwable.printStackTrace()

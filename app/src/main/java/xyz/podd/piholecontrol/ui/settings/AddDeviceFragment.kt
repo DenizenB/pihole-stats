@@ -19,8 +19,6 @@ import org.json.JSONException
 import xyz.podd.piholecontrol.R
 import xyz.podd.piholecontrol.Storage
 import xyz.podd.piholecontrol.model.Device
-import xyz.podd.piholecontrol.service.ServiceHelper
-import xyz.podd.piholecontrol.service.PiHoleService
 import javax.net.ssl.SSLHandshakeException
 
 class AddDeviceFragment : Fragment() {
@@ -62,12 +60,10 @@ class AddDeviceFragment : Fragment() {
                     txtPassword.editText!!.text.toString(),
                     swVerifySsl.isChecked
                 )
-                var service: PiHoleService? = null
 
                 // Verify URL
                 try {
-                    service = ServiceHelper().buildService(device)
-                    service.getStatus()
+                    device.service.getStatus()
                 } catch (e: SSLHandshakeException) {
                     error = "Failed to verify SSL certificate"
                 } catch (e: JSONException) {
@@ -84,7 +80,7 @@ class AddDeviceFragment : Fragment() {
 
                 // Verify password
                 try {
-                    service!!.getTopItems(device.authToken)
+                    device.service.getTopItems(device.authToken)
                 }catch (e: Exception) {
                     e.printStackTrace()
                     error = "Invalid password"

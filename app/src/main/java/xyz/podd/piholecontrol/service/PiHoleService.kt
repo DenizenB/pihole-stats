@@ -12,7 +12,7 @@ interface PiHoleService {
 	@GET("api.php?status")
 	suspend fun getStatus(): Status
 
-	@GET("api.php?summary")
+	@GET("api.php?summaryRaw")
 	suspend fun getSummary(): Summary
 
 	@GET("api.php?topItems")
@@ -30,12 +30,12 @@ data class Status(val status: String) {
 
 @Serializable
 data class Summary(
-	val status: String,
-	@SerialName("domains_being_blocked") val domainsInBlocklist: String,
-	@SerialName("dns_queries_today") val queriesToday: String,
-	@SerialName("ads_blocked_today") val blockedToday: String,
-	@SerialName("ads_percentage_today") val blockedTodayPercentage: String,
-	@SerialName("unique_domains") val uniqueDomains: String
+	@SerialName("domains_being_blocked") val domainsInBlocklist: Int,
+	@SerialName("dns_queries_today") val queriesToday: Int,
+	@SerialName("ads_blocked_today") val blockedToday: Int,
+	@SerialName("ads_percentage_today") val blockedTodayPercentage: Double,
+	@SerialName("unique_domains") val uniqueDomains: Int,
+	val status: String? = null
 ) {
 	val enabled
 		get() = status == "enabled"

@@ -1,6 +1,8 @@
 package xyz.podd.piholecontrol.service
 
+import android.annotation.SuppressLint
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import okhttp3.*
 import retrofit2.Retrofit
@@ -13,6 +15,7 @@ import javax.net.ssl.SSLContext
 import javax.net.ssl.SSLSession
 import javax.net.ssl.X509TrustManager
 
+@ExperimentalSerializationApi
 class ServiceHelper {
 	fun buildService(device: Device): PiHoleService {
 		val jsonConverter = Json { ignoreUnknownKeys = true }
@@ -59,6 +62,7 @@ private class SetCookieJar: CookieJar {
 	override fun loadForRequest(url: HttpUrl): MutableList<Cookie> = _cookies.toMutableList()
 }
 
+@SuppressLint("TrustAllX509TrustManager")
 private class TrustAllCerts: X509TrustManager {
 	override fun checkClientTrusted(p0: Array<out X509Certificate>?, p1: String?) {}
 
@@ -67,6 +71,7 @@ private class TrustAllCerts: X509TrustManager {
 	override fun getAcceptedIssuers(): Array<X509Certificate> = emptyArray()
 }
 
+@SuppressLint("BadHostnameVerifier")
 private class TrustAllHostnames: HostnameVerifier {
 	override fun verify(p0: String?, p1: SSLSession?): Boolean = true
 }

@@ -20,7 +20,7 @@ class DeviceViewModel(private val device: Device) : ViewModel() {
 
         val exceptionHandler = CoroutineExceptionHandler{ _, throwable ->
             throwable.printStackTrace()
-            _summary.value = PiHoleSummary(R.drawable.ic_sentiment_very_dissatisfied_black_24dp)
+            _summary.postValue(PiHoleSummary(R.drawable.ic_sentiment_very_dissatisfied_black_24dp))
         }
 
         viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
@@ -31,9 +31,12 @@ class DeviceViewModel(private val device: Device) : ViewModel() {
                 else -> R.drawable.ic_sentiment_very_dissatisfied_black_24dp
             }
 
-            _summary.value = PiHoleSummary(drawable,
+            val summary = PiHoleSummary(drawable,
                 "${status.queriesToday} queries",
-                "${status.blockedTodayPercentage}% blocked")
+                "${status.blockedTodayPercentage}% blocked"
+            )
+
+            _summary.postValue(summary)
         }
     }
 }

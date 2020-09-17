@@ -96,7 +96,7 @@ class AddDeviceFragment : Fragment() {
                 }
 
                 // Save to storage
-                val storage = Storage(context!!)
+                val storage = Storage(requireContext())
                 val devices = storage.devices
                 devices.add(device)
                 storage.devices = devices

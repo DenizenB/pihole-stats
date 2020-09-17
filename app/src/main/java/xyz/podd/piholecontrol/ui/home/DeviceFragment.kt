@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 
 import xyz.podd.piholecontrol.R
 import xyz.podd.piholecontrol.model.Device
@@ -53,12 +54,12 @@ class DeviceFragment : Fragment() {
         lblBlocked.text = ""
         lblToday.visibility = View.INVISIBLE
 
-        viewModel.summary.observe(viewLifecycleOwner, {
+        viewModel.summary.observe(viewLifecycleOwner) {
             imgStatus.setImageDrawable(resources.getDrawable(it.drawable))
             lblQueries.text = it.queries
             lblBlocked.text = it.blocked
             lblToday.visibility = View.VISIBLE
-        })
+        }
 
         return root
     }
@@ -70,6 +71,7 @@ class DeviceFragment : Fragment() {
     }
 }
 
+@Suppress("UNCHECKED_CAST")
 class DeviceViewModelFactory(private val device: Device): ViewModelProvider.NewInstanceFactory() {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T = DeviceViewModel(device) as T
 }

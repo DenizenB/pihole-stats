@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import xyz.podd.piholecontrol.R
 
 class HomeFragment : Fragment() {
@@ -24,7 +25,7 @@ class HomeFragment : Fragment() {
 
         val root = inflater.inflate(R.layout.fragment_home, container, false)
 
-        viewModel.devices.observe(viewLifecycleOwner, {
+        viewModel.devices.observe(viewLifecycleOwner) {
             val transaction = parentFragmentManager.beginTransaction()
 
             // Remove old
@@ -40,7 +41,7 @@ class HomeFragment : Fragment() {
             }
 
             transaction.commit()
-        })
+        }
 
         return root
     }
@@ -52,6 +53,7 @@ class HomeFragment : Fragment() {
     }
 }
 
+@Suppress("UNCHECKED_CAST")
 class HomeViewModelFactory(private val context: Context): ViewModelProvider.NewInstanceFactory() {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T = HomeViewModel(context) as T
 }

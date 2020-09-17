@@ -7,6 +7,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
+import java.util.*
 
 interface PiHoleService {
 	@GET("api.php?status")
@@ -39,10 +40,40 @@ data class Summary(
 ) {
 	val enabled
 		get() = status == "enabled"
+
+	operator fun plus(other: Summary): Summary {
+		val sumQueries = queriesToday + other.queriesToday
+		val sumBlocked = blockedToday + other.blockedToday
+		val blockedPercentage = sumBlocked.toDouble() / sumQueries
+
+		return Summary(
+			domainsInBlocklist + other.domainsInBlocklist,
+			sumQueries,
+			sumBlocked,
+			blockedPercentage,
+			uniqueDomains + other.uniqueDomains
+		)
+	}
 }
 
 @Serializable
 data class TopItems(
 	@SerialName("top_queries") val queries: Map<String, Int>,
 	@SerialName("top_ads") val ads: Map<String, Int>
-)
+) {
+	operator fun plus(other: TopItems): TopItems = TopItems(
+		merge(queries, other.queries),
+		merge(ads, other.ads)
+	)
+
+	private fun merge(a: Map<String, Int>, b: Map<String, Int>): Map<String, Int> {
+		return (a.asSequence() + b.asSequence())
+			.groupBy({ it.key }, { it.value }) // Join entries describing the same domain...
+			.mapValues { (_, counts) -> counts.sum() } // ... and calculate their sum
+			.toList()
+			.sortedBy { (_, value) -> value } // Sort by count
+			.reversed()
+			.take(10)
+			.toMap()
+	}
+}

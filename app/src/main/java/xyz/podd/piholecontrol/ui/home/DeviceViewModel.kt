@@ -32,8 +32,8 @@ class DeviceViewModel(private val device: Device) : ViewModel() {
             }
 
             val summary = PiHoleSummary(drawable,
-                "${status.queriesToday} queries",
-                "${status.blockedTodayPercentage}% blocked"
+                "%,d queries".format(status.queriesToday),
+                "%.1f%% blocked".format(status.blockedTodayPercentage)
             )
 
             _summary.postValue(summary)

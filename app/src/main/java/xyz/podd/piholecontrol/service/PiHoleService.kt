@@ -66,14 +66,12 @@ data class TopItems(
 		merge(ads, other.ads)
 	)
 
-	private fun merge(a: Map<String, Int>, b: Map<String, Int>): Map<String, Int> {
-		return (a.asSequence() + b.asSequence())
-			.groupBy({ it.key }, { it.value }) // Join entries describing the same domain...
-			.mapValues { (_, counts) -> counts.sum() } // ... and calculate their sum
-			.toList()
-			.sortedBy { (_, value) -> value } // Sort by count
-			.reversed()
-			.take(10)
-			.toMap()
-	}
+	private fun merge(a: Map<String, Int>, b: Map<String, Int>) = (a.asSequence() + b.asSequence())
+		.groupBy({ it.key }, { it.value }) // Join entries describing the same domain...
+		.mapValues { (_, counts) -> counts.sum() } // ... and calculate their sum
+		.toList()
+		.sortedBy { (_, value) -> value } // Sort by count
+		.reversed()
+		.take(10)
+		.toMap()
 }

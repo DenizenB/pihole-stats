@@ -6,9 +6,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        // Gradle 4+ and Jetpack do not get along currently
-        // https://intellij-support.jetbrains.com/hc/en-us/community/posts/360008037240-Gradle-doesn-t-work-anymore-after-IDEA-update-Cannot-convert-string-value-JETPACK-COMPOSE-
-        classpath "com.android.tools.build:gradle:3.6.2"
+        classpath 'com.android.tools.build:gradle:4.0.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
         // NOTE: Do not place your application dependencies here; they belong

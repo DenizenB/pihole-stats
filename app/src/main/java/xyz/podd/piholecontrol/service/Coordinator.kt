@@ -15,4 +15,16 @@ class Coordinator(private val devices: Collection<Device>) {
             .map { it.service.getTopItems(it.authToken) }
             .reduce { a, b -> a + b }
     }
+
+    suspend fun getTopClients(): TopClients {
+        return devices.asFlow()
+            .map { it.service.getTopClients(it.authToken) }
+            .reduce { a, b -> a + b }
+    }
+
+    suspend fun getTopClientsBlocked(): TopClientsBlocked {
+        return devices.asFlow()
+            .map { it.service.getTopClientsBlocked(it.authToken) }
+            .reduce { a, b -> a + b }
+    }
 }

@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
+import androidx.recyclerview.widget.RecyclerView
 import xyz.podd.piholecontrol.R
 
 class HomeFragment : Fragment() {
@@ -41,6 +42,14 @@ class HomeFragment : Fragment() {
             }
 
             transaction.commit()
+        }
+
+        val clientView: RecyclerView = root.findViewById(R.id.recyclerClients)
+        val clientAdapter = ClientAdapter()
+        clientView.adapter = clientAdapter
+
+        viewModel.topClients.observe(viewLifecycleOwner) {
+            clientAdapter.submitList(it.entries.toList())
         }
 
         return root

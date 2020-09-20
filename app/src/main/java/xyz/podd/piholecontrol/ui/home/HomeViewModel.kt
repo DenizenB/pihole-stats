@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import xyz.podd.piholecontrol.Storage
+import xyz.podd.piholecontrol.model.Client
 import xyz.podd.piholecontrol.model.Device
 
 class HomeViewModel(private val context: Context) : ViewModel() {

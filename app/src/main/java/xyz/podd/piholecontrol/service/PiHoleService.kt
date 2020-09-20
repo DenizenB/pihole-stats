@@ -15,7 +15,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
-import kotlin.collections.LinkedHashMap
+import xyz.podd.piholecontrol.model.Client
 
 interface PiHoleService {
 	@GET("api.php?status")
@@ -118,23 +118,6 @@ class ClientMapSerializer(key: KSerializer<Client>, value: KSerializer<Int>) : K
 	}
 
 	override fun serialize(encoder: Encoder, value: Map<Client, Int>) = throw NotImplementedError()
-}
-
-@Serializable
-class Client(val name: String, val address: String) {
-	constructor(client: String): this(
-		client.substringBefore("|"),
-		client.substringAfter("|")
-	)
-
-	override fun toString() = when (name.isEmpty()) {
-		true -> address
-		else -> name
-	}
-
-	override fun equals(other: Any?) = other is Client && address == other.address
-
-	override fun hashCode() = address.hashCode()
 }
 
 fun <K> merge(a: Map<K, Int>, b: Map<K, Int>) = (a.asSequence() + b.asSequence())

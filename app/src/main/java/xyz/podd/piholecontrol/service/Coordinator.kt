@@ -1,6 +1,7 @@
 package xyz.podd.piholecontrol.service
 
 import kotlinx.coroutines.flow.*
+import xyz.podd.piholecontrol.model.Client
 import xyz.podd.piholecontrol.model.Device
 
 class Coordinator(private val devices: Collection<Device>) {

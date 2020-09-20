@@ -3,7 +3,7 @@
     android:layout_width="match_parent">
 
     <PreferenceCategory
-        app:title="@string/devices_header"
+        app:title="@string/devices_title"
         app:iconSpaceReserved="false">
 
         <Preference

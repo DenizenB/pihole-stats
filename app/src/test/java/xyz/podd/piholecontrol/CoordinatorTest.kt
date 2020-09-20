@@ -35,9 +35,4 @@ class CoordinatorTest {
     fun getTopClients() = runBlocking {
         println(coordinator.getTopClients())
     }
-
-    @Test
-    fun getTopClientsBlocked() = runBlocking {
-        println(coordinator.getTopClientsBlocked())
-    }
 }

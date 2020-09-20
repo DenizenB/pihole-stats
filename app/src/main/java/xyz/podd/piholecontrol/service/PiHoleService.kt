@@ -1,21 +1,16 @@
 package xyz.podd.piholecontrol.service
 
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.descriptors.SerialDescriptor
-import kotlinx.serialization.encoding.Decoder
-import kotlinx.serialization.encoding.Encoder
-import kotlinx.serialization.json.JsonDecoder
-import kotlinx.serialization.json.int
-import kotlinx.serialization.json.jsonObject
-import kotlinx.serialization.json.jsonPrimitive
 import okhttp3.RequestBody
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
 import xyz.podd.piholecontrol.model.Client
+import xyz.podd.piholecontrol.model.ClientBlockedSerializer
+import xyz.podd.piholecontrol.model.ClientQueriesSerializer
+import xyz.podd.piholecontrol.model.ClientStats
 
 interface PiHoleService {
 	@GET("api.php?status")
@@ -84,44 +79,19 @@ data class TopItems(
 @Serializable
 data class TopClients(
 	@SerialName("top_sources")
-	@Serializable(with = ClientMapSerializer::class)
-	val clients: Map<Client, Int>
-) {
-	operator fun plus(other: TopClients) = TopClients(
-		merge(clients, other.clients)
-	)
-}
+	@Serializable(with = ClientQueriesSerializer::class)
+	val stats: Map<Client, ClientStats>
+)
 
 @Serializable
 data class TopClientsBlocked(
 	@SerialName("top_sources_blocked")
-	@Serializable(with = ClientMapSerializer::class)
-	val clients: Map<Client, Int>
-) {
-	operator fun plus(other: TopClientsBlocked) = TopClientsBlocked(
-		merge(clients, other.clients)
-	)
-}
-
-class ClientMapSerializer(key: KSerializer<Client>, value: KSerializer<Int>) : KSerializer<Map<Client, Int>> {
-	override val descriptor: SerialDescriptor = key.descriptor
-
-	override fun deserialize(decoder: Decoder): Map<Client, Int> {
-		check(decoder is JsonDecoder)
-
-		val map = LinkedHashMap<Client, Int>()
-		val jsonMap = decoder.decodeJsonElement().jsonObject
-		jsonMap.asSequence()
-			.forEach { map[Client(it.key)] = it.value.jsonPrimitive.int }
-
-		return map
-	}
-
-	override fun serialize(encoder: Encoder, value: Map<Client, Int>) = throw NotImplementedError()
-}
+	@Serializable(with = ClientBlockedSerializer::class)
+	val stats: Map<Client, ClientStats>
+)
 
 fun <K> merge(a: Map<K, Int>, b: Map<K, Int>) = (a.asSequence() + b.asSequence())
-	.groupingBy { it.key } // Group entries describing the same domain...
+	.groupingBy { it.key } // Group entries with the same key...
 	.fold(0) { sum, entry -> sum + entry.value } // ... and calculate their sum
 	.toList()
 	.sortedBy { (_, value) -> value } // Sort by sum...

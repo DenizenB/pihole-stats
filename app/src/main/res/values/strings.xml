@@ -4,7 +4,9 @@
     <string name="dashboard_title">Dashboard</string>
     <string name="settings_title">Settings</string>
     <string name="devices_title">Devices</string>
-    <string name="clients_title">Clients</string>
+    <string name="top_clients_title">Top Clients</string>
+    <string name="top_queries_title">Top Permitted Domains</string>
+    <string name="top_blocked_title">Top Blocked Domains</string>
 
     <!-- Add device -->
     <string name="add_device_title">Add device</string>

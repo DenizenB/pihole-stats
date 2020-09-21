@@ -96,4 +96,5 @@ fun <K> merge(a: Map<K, Int>, b: Map<K, Int>) = (a.asSequence() + b.asSequence()
 	.toList()
 	.sortedBy { (_, value) -> value } // Sort by sum...
 	.reversed() // ... descending
+	.take(10)
 	.toMap()

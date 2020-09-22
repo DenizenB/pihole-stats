@@ -60,4 +60,5 @@ fun mergeClientStats(a: Map<Client, ClientStats>, b: Map<Client, ClientStats>): 
         .toList()
         .sortedBy { (_, value) -> value.queries } // Sort by queries...
         .reversed() // ... descending
+        .take(10)
         .toMap()

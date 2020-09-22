@@ -10,27 +10,40 @@
         android:layout_height="wrap_content"
         tools:context=".ui.home.HomeFragment">
 
-        <TextView
-            android:id="@+id/text_devices"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_devices"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:text="@string/devices_title"
-            android:textSize="24sp"
+            android:padding="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
-            android:id="@+id/layout_devices"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_devices" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/devices_title"
+                    android:textSize="24sp" />
+
+                <LinearLayout
+                    android:id="@+id/layout_devices"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/card_clients"
@@ -42,7 +55,7 @@
             android:padding="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layout_devices">
+            app:layout_constraintTop_toBottomOf="@id/card_devices">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -50,7 +63,6 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/text_clients"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -68,8 +80,6 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
                     android:paddingBottom="8dp" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -92,7 +102,6 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/text_queries"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
@@ -108,8 +117,6 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
                     android:paddingBottom="8dp" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -134,7 +141,6 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/text_blocked"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"

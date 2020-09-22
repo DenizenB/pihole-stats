@@ -20,6 +20,16 @@ class ClientAdapter: ListAdapter<Map.Entry<Client, ClientStats>, ClientViewHolde
     override fun onBindViewHolder(holder: ClientViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
+
+    object DiffUtilCallback: DiffUtil.ItemCallback<Map.Entry<Client, ClientStats>>() {
+        override fun areItemsTheSame(oldItem: Map.Entry<Client, ClientStats>, newItem: Map.Entry<Client, ClientStats>): Boolean {
+            return oldItem.key == newItem.key
+        }
+
+        override fun areContentsTheSame(oldItem: Map.Entry<Client, ClientStats>, newItem: Map.Entry<Client, ClientStats>): Boolean {
+            return oldItem.value == newItem.value
+        }
+    }
 }
 
 class ClientViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -31,15 +41,5 @@ class ClientViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         textClient.text = item.key.toString()
         textQueries.text = "%,d".format(item.value.queries)
         textBlocked.text = "%,d".format(item.value.blocked)
-    }
-}
-
-object DiffUtilCallback: DiffUtil.ItemCallback<Map.Entry<Client, ClientStats>>() {
-    override fun areItemsTheSame(oldItem: Map.Entry<Client, ClientStats>, newItem: Map.Entry<Client, ClientStats>): Boolean {
-        return oldItem.key == newItem.key
-    }
-
-    override fun areContentsTheSame(oldItem: Map.Entry<Client, ClientStats>, newItem: Map.Entry<Client, ClientStats>): Boolean {
-        return oldItem == newItem // TODO test
     }
 }

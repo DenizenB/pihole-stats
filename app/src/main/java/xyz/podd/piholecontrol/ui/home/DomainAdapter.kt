@@ -26,7 +26,7 @@ class DomainAdapter(private val blockedDomains: Boolean): ListAdapter<Map.Entry<
         }
 
         override fun areContentsTheSame(oldItem: Map.Entry<String, Int>, newItem: Map.Entry<String, Int>): Boolean {
-            return oldItem == newItem // TODO test
+            return oldItem.value == newItem.value
         }
     }
 }

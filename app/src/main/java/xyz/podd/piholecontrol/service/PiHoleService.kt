@@ -3,14 +3,8 @@ package xyz.podd.piholecontrol.service
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import okhttp3.RequestBody
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Query
-import xyz.podd.piholecontrol.model.Client
-import xyz.podd.piholecontrol.model.ClientBlockedSerializer
-import xyz.podd.piholecontrol.model.ClientQueriesSerializer
-import xyz.podd.piholecontrol.model.ClientStats
+import retrofit2.http.*
+import xyz.podd.piholecontrol.model.*
 
 interface PiHoleService {
 	@GET("api.php?status")
@@ -27,6 +21,9 @@ interface PiHoleService {
 
 	@GET("api.php?topClientsBlocked")
 	suspend fun getTopClientsBlocked(@Query("auth") authToken: String): TopClientsBlocked
+
+	@GET("api.php?getAllQueries")
+	suspend fun getClientQueries(@Query("auth") authToken: String, @Query("client") client: String): Queries
 
 	@POST("scripts/pi-hole/php/tailLog.php")
 	suspend fun getTailLogHeight(@Body body: RequestBody): String
@@ -88,6 +85,11 @@ data class TopClientsBlocked(
 	@SerialName("top_sources_blocked")
 	@Serializable(with = ClientBlockedSerializer::class)
 	val stats: Map<Client, ClientStats>
+)
+
+@Serializable
+data class Queries(
+	val data: List<QueryData>
 )
 
 fun <K> merge(a: Map<K, Int>, b: Map<K, Int>) = (a.asSequence() + b.asSequence())

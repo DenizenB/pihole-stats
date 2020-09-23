@@ -16,7 +16,7 @@ import xyz.podd.piholecontrol.model.Device
 import xyz.podd.piholecontrol.service.Coordinator
 import xyz.podd.piholecontrol.service.TopItems
 
-class HomeViewModel(private val context: Context) : ViewModel() {
+class HomeViewModel(context: Context) : ViewModel() {
     private val storage = Storage(context)
 
     private val _devices = MutableLiveData<List<Device>>()

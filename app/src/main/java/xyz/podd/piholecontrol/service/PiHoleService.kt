@@ -23,7 +23,16 @@ interface PiHoleService {
 	suspend fun getTopClientsBlocked(@Query("auth") authToken: String): TopClientsBlocked
 
 	@GET("api.php?getAllQueries")
-	suspend fun getClientQueries(@Query("auth") authToken: String, @Query("client") client: String): Queries
+	suspend fun getQueries(@Query("auth") authToken: String): Queries
+
+	@GET("api.php")
+	suspend fun getQueries(@Query("auth") authToken: String, @Query("getAllQueries") count: Int): Queries
+
+	@GET("api.php?getAllQueries")
+	suspend fun getQueriesByTime(@Query("auth") authToken: String, @Query("from") from: Long, @Query("until") until: Long): Queries
+
+	@GET("api.php?getAllQueries")
+	suspend fun getQueriesByClient(@Query("auth") authToken: String, @Query("client") client: String): Queries
 
 	@POST("scripts/pi-hole/php/tailLog.php")
 	suspend fun getTailLogHeight(@Body body: RequestBody): String

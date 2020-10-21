@@ -15,15 +15,15 @@ class Coordinator(private val devices: Collection<Device>) {
 
     suspend fun getTopItems(): TopItems {
         return devices.asFlow()
-            .map { it.service.getTopItems(it.authToken) }
+            .map { it.service.getTopItems() }
             .reduce { a, b -> a + b }
     }
 
     suspend fun getTopClients(): Map<Client, ClientStats> {
         val topQueries = devices.asFlow()
-            .map { it.service.getTopClients(it.authToken).stats }
+            .map { it.service.getTopClients().stats }
         val topBlocked = devices.asFlow()
-            .map { it.service.getTopClientsBlocked(it.authToken).stats }
+            .map { it.service.getTopClientsBlocked().stats }
 
         var result: Map<Client, ClientStats> = emptyMap()
         flowOf(topQueries, topBlocked)

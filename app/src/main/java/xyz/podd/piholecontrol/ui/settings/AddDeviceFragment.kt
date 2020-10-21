@@ -80,7 +80,7 @@ class AddDeviceFragment : Fragment() {
 
                 // Verify password
                 try {
-                    device.service.getTopItems(device.authToken)
+                    device.service.getTopItems()
                 }catch (e: Exception) {
                     e.printStackTrace()
                     error = "Invalid password"

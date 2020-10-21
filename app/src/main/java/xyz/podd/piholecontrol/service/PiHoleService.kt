@@ -14,25 +14,25 @@ interface PiHoleService {
 	suspend fun getSummary(): Summary
 
 	@GET("api.php")
-	suspend fun getTopItems(@Query("auth") authToken: String, @Query("topItems") count: Int = 10): TopItems
+	suspend fun getTopItems(@Query("topItems") count: Int = 10): TopItems
 
 	@GET("api.php?topClients")
-	suspend fun getTopClients(@Query("auth") authToken: String): TopClients
+	suspend fun getTopClients(): TopClients
 
 	@GET("api.php?topClientsBlocked")
-	suspend fun getTopClientsBlocked(@Query("auth") authToken: String): TopClientsBlocked
+	suspend fun getTopClientsBlocked(): TopClientsBlocked
 
 	@GET("api.php?getAllQueries")
-	suspend fun getQueries(@Query("auth") authToken: String): Queries
+	suspend fun getQueries(): Queries
 
 	@GET("api.php")
-	suspend fun getQueries(@Query("auth") authToken: String, @Query("getAllQueries") count: Int): Queries
+	suspend fun getQueries(@Query("getAllQueries") count: Int): Queries
 
 	@GET("api.php?getAllQueries")
-	suspend fun getQueriesByTime(@Query("auth") authToken: String, @Query("from") from: Long, @Query("until") until: Long): Queries
+	suspend fun getQueriesByTime(@Query("from") from: Long, @Query("until") until: Long): Queries
 
 	@GET("api.php?getAllQueries")
-	suspend fun getQueriesByClient(@Query("auth") authToken: String, @Query("client") client: String): Queries
+	suspend fun getQueriesByClient(@Query("client") client: String): Queries
 
 	@POST("scripts/pi-hole/php/tailLog.php")
 	suspend fun getTailLogHeight(@Body body: RequestBody): String

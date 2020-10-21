@@ -24,18 +24,19 @@ object ServiceHelper {
 		val retrofit = Retrofit.Builder()
 			.baseUrl(device.url)
 			.addConverterFactory(jsonFactory)
-			.client(buildClient(device.verifySsl))
+			.client(buildClient(device))
 			.build()
 
 		return retrofit.create(PiHoleService::class.java)
 	}
 
 	// https://stackoverflow.com/questions/37686625/disable-ssl-certificate-check-in-retrofit-library
-	private fun buildClient(verifySsl: Boolean): OkHttpClient {
+	private fun buildClient(device: Device): OkHttpClient {
 		val builder = client.newBuilder()
 			.cookieJar(SetCookieJar())
+			.addInterceptor(AuthInterceptor(device.authToken))
 
-		if (!verifySsl) {
+		if (!device.verifySsl) {
 			val trustManager = TrustAllCerts()
 
 			val sslContext = SSLContext.getInstance("SSL")

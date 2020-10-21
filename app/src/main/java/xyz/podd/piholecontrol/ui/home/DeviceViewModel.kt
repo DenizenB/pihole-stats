@@ -16,15 +16,13 @@ class DeviceViewModel(private val device: Device) : ViewModel() {
     val summary: LiveData<PiHoleSummary> = _summary
 
     fun fetchStatus() {
-        val service = ServiceHelper.buildService(device)
-
         val exceptionHandler = CoroutineExceptionHandler{ _, throwable ->
             throwable.printStackTrace()
             _summary.postValue(PiHoleSummary(R.drawable.ic_sentiment_very_dissatisfied_black_24dp))
         }
 
         viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
-            val status = service.getSummary()
+            val status = device.service.getSummary()
 
             val drawable = when (status.enabled) {
                 true -> R.drawable.ic_sentiment_very_satisfied_black_24dp

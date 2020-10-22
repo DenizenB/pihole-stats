@@ -1,5 +1,6 @@
 package xyz.podd.piholecontrol.model
 
+import android.icu.text.SimpleDateFormat
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.descriptors.PrimitiveKind
@@ -10,15 +11,21 @@ import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.json.JsonDecoder
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonPrimitive
+import java.util.*
+
+val timeFormat = SimpleDateFormat("HH:mm:ss")
 
 @Serializable(with = QueryDataSerializer::class)
 data class QueryData(
     val time: Long,
     val domain: String,
     val blocked: Boolean
-)
+) {
+    val timeString: String
+        get() = timeFormat.format(Date(time))
+}
 
-class QueryDataSerializer() : KSerializer<QueryData> {
+class QueryDataSerializer : KSerializer<QueryData> {
     override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("Query", PrimitiveKind.STRING) // TODO look into descriptors
 
     override fun deserialize(decoder: Decoder): QueryData {

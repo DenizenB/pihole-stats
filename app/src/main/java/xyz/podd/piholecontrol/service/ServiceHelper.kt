@@ -17,7 +17,12 @@ import javax.net.ssl.X509TrustManager
 
 @ExperimentalSerializationApi
 object ServiceHelper {
-	private val client by lazy { OkHttpClient.Builder().callTimeout(3, TimeUnit.SECONDS).build() }
+	private val client by lazy {
+		OkHttpClient.Builder()
+			.callTimeout(3, TimeUnit.SECONDS)
+			.addInterceptor(LoggingInterceptor())
+			.build()
+	}
 	private val jsonFactory by lazy { Json { ignoreUnknownKeys = true }.asConverterFactory(MediaType.get("application/json")) }
 
 	fun buildService(device: Device): PiHoleService {

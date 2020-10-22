@@ -1,6 +1,7 @@
 package xyz.podd.piholecontrol
 
 import android.content.Context
+import android.content.SharedPreferences
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -9,7 +10,7 @@ import xyz.podd.piholecontrol.model.Device
 private const val PREFERENCE_FILE = "prefs"
 
 class Storage(context: Context) {
-    val preferences = context.getSharedPreferences(PREFERENCE_FILE, Context.MODE_PRIVATE)
+    private val preferences: SharedPreferences = context.getSharedPreferences(PREFERENCE_FILE, Context.MODE_PRIVATE)
 
     var devices: MutableList<Device>
         get() = get(DEVICES) ?: ArrayList()

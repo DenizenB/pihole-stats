@@ -22,13 +22,11 @@ class ClientAdapter: ListAdapter<Map.Entry<Client, ClientStats>, ClientViewHolde
     }
 
     object DiffUtilCallback: DiffUtil.ItemCallback<Map.Entry<Client, ClientStats>>() {
-        override fun areItemsTheSame(oldItem: Map.Entry<Client, ClientStats>, newItem: Map.Entry<Client, ClientStats>): Boolean {
-            return oldItem.key == newItem.key
-        }
+        override fun areItemsTheSame(oldItem: Map.Entry<Client, ClientStats>, newItem: Map.Entry<Client, ClientStats>) =
+            oldItem.key == newItem.key
 
-        override fun areContentsTheSame(oldItem: Map.Entry<Client, ClientStats>, newItem: Map.Entry<Client, ClientStats>): Boolean {
-            return oldItem.value == newItem.value
-        }
+        override fun areContentsTheSame(oldItem: Map.Entry<Client, ClientStats>, newItem: Map.Entry<Client, ClientStats>) =
+            oldItem.value == newItem.value
     }
 }
 

@@ -26,7 +26,11 @@ class QueryAdapter: ListAdapter<QueryData, QueryViewHolder>(DiffUtilCallback) {
             oldItem == newItem
 
         override fun areContentsTheSame(oldItem: QueryData, newItem: QueryData) =
-            true
+            oldItem == newItem
+    }
+
+    companion object {
+        const val MAX_COUNT = 14
     }
 }
 

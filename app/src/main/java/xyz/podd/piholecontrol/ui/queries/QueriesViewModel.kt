@@ -22,7 +22,7 @@ class QueriesViewModel(context: Context) : ViewModel() {
         for (device in devices) {
             viewModelScope.launch(Dispatchers.IO) {
                 while (true) {
-                    _queries.postValue(device.service.getQueries(20).data)
+                    _queries.postValue(device.service.getQueries(QueryAdapter.MAX_COUNT).data)
                     delay(1_000)
                 }
             }

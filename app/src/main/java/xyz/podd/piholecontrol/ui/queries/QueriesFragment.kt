@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import xyz.podd.piholecontrol.R
-import xyz.podd.piholecontrol.ui.home.NoScrollLinearLayoutManager
+import xyz.podd.piholecontrol.model.QueryData
 
 class QueriesFragment : Fragment() {
 
@@ -33,8 +33,22 @@ class QueriesFragment : Fragment() {
         val queryAdapter = QueryAdapter()
         queriesView.adapter = queryAdapter
 
-        viewModel.queries.observe(viewLifecycleOwner) {
-            queryAdapter.submitList(it)
+        viewModel.queries.observe(viewLifecycleOwner) { newQueries ->
+            val previousQueries = queryAdapter.currentList
+
+            // If the list is empty, submit the new one in full
+            if (previousQueries.isEmpty()) {
+                queryAdapter.submitList(newQueries.toSortedSet(QueryComparator).toList())
+                return@observe
+            }
+
+            // Merge old and new queries in a sorted set
+            val mergedQueries = previousQueries.toSortedSet(QueryComparator)
+            mergedQueries.addAll(newQueries)
+
+            // Submit queries (at most QueryAdapter.MAX_COUNT)
+            val mostRecentQueries = mergedQueries.toList().takeLast(QueryAdapter.MAX_COUNT)
+            queryAdapter.submitList(mostRecentQueries)
         }
 
         return root
@@ -50,4 +64,11 @@ class QueriesFragment : Fragment() {
 @Suppress("UNCHECKED_CAST")
 class QueriesViewModelFactory(private val context: Context): ViewModelProvider.NewInstanceFactory() {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T = QueriesViewModel(context) as T
+}
+
+object QueryComparator: Comparator<QueryData> {
+    override fun compare(lhs: QueryData, rhs: QueryData) = when {
+        lhs.time != rhs.time -> lhs.time.compareTo(rhs.time)
+        else -> lhs.domain.compareTo(rhs.domain)
+    }
 }

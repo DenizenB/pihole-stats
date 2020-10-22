@@ -22,7 +22,7 @@ data class QueryData(
     val blocked: Boolean
 ) {
     val timeString: String
-        get() = timeFormat.format(Date(time))
+        get() = timeFormat.format(Date(time * 1000))
 }
 
 class QueryDataSerializer : KSerializer<QueryData> {

@@ -1,0 +1,31 @@
+package xyz.podd.piholecontrol.ui.queries
+
+import android.content.Context
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import xyz.podd.piholecontrol.Storage
+import xyz.podd.piholecontrol.model.QueryData
+
+class QueriesViewModel(context: Context) : ViewModel() {
+    private val storage = Storage(context)
+    private val devices = storage.devices
+
+    private val _queries = MutableLiveData<List<QueryData>>()
+    val queries: LiveData<List<QueryData>> = _queries
+
+    fun subscribe() {
+        for (device in devices) {
+            viewModelScope.launch(Dispatchers.IO) {
+                while (true) {
+                    _queries.postValue(device.service.getQueries(20).data)
+                    delay(1_000)
+                }
+            }
+        }
+    }
+}

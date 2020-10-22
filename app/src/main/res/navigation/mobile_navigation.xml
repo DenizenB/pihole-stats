@@ -12,10 +12,10 @@
             tools:layout="@layout/fragment_home"/>
 
     <fragment
-            android:id="@+id/navigation_dashboard"
-            android:name="xyz.podd.piholecontrol.ui.dashboard.DashboardFragment"
-            android:label="@string/dashboard_title"
-            tools:layout="@layout/fragment_dashboard"/>
+            android:id="@+id/navigation_queries"
+            android:name="xyz.podd.piholecontrol.ui.queries.QueriesFragment"
+            android:label="@string/queries_title"
+            tools:layout="@layout/fragment_queries"/>
 
     <fragment
             android:id="@+id/navigation_settings"

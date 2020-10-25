@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import xyz.podd.piholestats.R
 import xyz.podd.piholestats.model.QueryData
+import java.util.*
+import kotlin.Comparator
 
 class QueriesFragment : Fragment() {
 
@@ -34,20 +36,12 @@ class QueriesFragment : Fragment() {
         queriesView.adapter = queryAdapter
 
         viewModel.queries.observe(viewLifecycleOwner) { newQueries ->
-            val previousQueries = queryAdapter.currentList
-
-            // If the list is empty, submit the new one in full
-            if (previousQueries.isEmpty()) {
-                queryAdapter.submitList(newQueries.toSortedSet(QueryComparator).toList())
-                return@observe
-            }
-
             // Merge old and new queries in a sorted set
-            val mergedQueries = previousQueries.toSortedSet(QueryComparator)
-            mergedQueries.addAll(newQueries)
+            val queries: SortedSet<QueryData> = queryAdapter.currentList.toSortedSet(QueryComparator)
+            queries.addAll(newQueries)
 
             // Submit queries (at most QueryAdapter.MAX_COUNT)
-            val mostRecentQueries = mergedQueries.toList().takeLast(QueryAdapter.MAX_COUNT)
+            val mostRecentQueries = queries.toList().takeLast(QueryAdapter.MAX_COUNT)
             queryAdapter.submitList(mostRecentQueries)
         }
 

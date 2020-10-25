@@ -7,24 +7,24 @@
 
     <fragment
             android:id="@+id/navigation_home"
-            android:name="xyz.podd.piholecontrol.ui.home.HomeFragment"
+            android:name="xyz.podd.piholestats.ui.home.HomeFragment"
             android:label="@string/home_title"
             tools:layout="@layout/fragment_home"/>
 
     <fragment
             android:id="@+id/navigation_queries"
-            android:name="xyz.podd.piholecontrol.ui.queries.QueriesFragment"
+            android:name="xyz.podd.piholestats.ui.queries.QueriesFragment"
             android:label="@string/queries_title"
             tools:layout="@layout/fragment_queries"/>
 
     <fragment
             android:id="@+id/navigation_settings"
-            android:name="xyz.podd.piholecontrol.ui.settings.SettingsFragment"
+            android:name="xyz.podd.piholestats.ui.settings.SettingsFragment"
             android:label="@string/settings_title"/>
 
     <fragment
             android:id="@+id/navigation_add_device"
-            android:name="xyz.podd.piholecontrol.ui.settings.AddDeviceFragment"
+            android:name="xyz.podd.piholestats.ui.settings.AddDeviceFragment"
             android:label="@string/add_device_title"/>
 
 </navigation>

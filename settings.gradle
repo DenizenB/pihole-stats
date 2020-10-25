@@ -1,2 +1,2 @@
 include ':app'
-rootProject.name = "PiHole Control"
+rootProject.name = "pihole-stats"

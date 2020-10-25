@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PiHole Control</string>
+    <string name="app_name">Pi-hole Stats</string>
     <string name="home_title">Home</string>
     <string name="queries_title">Live Queries</string>
     <string name="settings_title">Settings</string>

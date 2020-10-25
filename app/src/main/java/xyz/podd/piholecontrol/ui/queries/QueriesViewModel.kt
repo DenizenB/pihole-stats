@@ -13,17 +13,20 @@ import xyz.podd.piholecontrol.model.QueryData
 
 class QueriesViewModel(context: Context) : ViewModel() {
     private val storage = Storage(context)
-    private val devices = storage.devices
 
     private val _queries = MutableLiveData<List<QueryData>>()
     val queries: LiveData<List<QueryData>> = _queries
 
     fun subscribe() {
-        for (device in devices) {
-            viewModelScope.launch(Dispatchers.IO) {
-                while (true) {
-                    _queries.postValue(device.service.getQueries(QueryAdapter.MAX_COUNT).data)
-                    delay(1_000)
+        viewModelScope.launch {
+            val devices = storage.devices
+
+            for (device in devices) {
+                viewModelScope.launch(Dispatchers.IO) {
+                    while (true) {
+                        _queries.postValue(device.service.getQueries(QueryAdapter.MAX_COUNT * 2).data)
+                        delay(1_000)
+                    }
                 }
             }
         }

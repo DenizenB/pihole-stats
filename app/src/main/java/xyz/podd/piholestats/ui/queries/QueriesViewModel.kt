@@ -9,7 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import xyz.podd.piholestats.Storage
-import xyz.podd.piholestats.model.QueryData
+import xyz.podd.piholestats.model.network.QueryData
 
 class QueriesViewModel(context: Context) : ViewModel() {
     private val storage = Storage(context)

@@ -26,17 +26,7 @@ class ServiceTest {
     }
 
     @Test
-    fun getTopItems() = runBlocking {
-        println(device.service.getTopItems())
-    }
-
-    @Test
-    fun getTopClients() = runBlocking {
-        println(device.service.getTopClients())
-    }
-
-    @Test
-    fun getTopClientsBlocked() = runBlocking {
-        println(device.service.getTopClientsBlocked())
+    fun getTopLists() = runBlocking {
+        println(device.service.getTopLists())
     }
 }

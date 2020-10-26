@@ -1,4 +1,4 @@
-package xyz.podd.piholestats.model
+package xyz.podd.piholestats.model.network
 
 import android.icu.text.SimpleDateFormat
 import kotlinx.serialization.KSerializer

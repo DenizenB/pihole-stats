@@ -51,10 +51,6 @@ class HomeFragment : Fragment() {
         val clientAdapter = ClientAdapter()
         clientView.adapter = clientAdapter
 
-        viewModel.topClients.observe(viewLifecycleOwner) {
-            clientAdapter.submitList(it.entries.toList())
-        }
-
         val queriesView: RecyclerView = root.findViewById(R.id.recycler_queries)
         val blockedView: RecyclerView = root.findViewById(R.id.recycler_blocked)
 
@@ -67,7 +63,8 @@ class HomeFragment : Fragment() {
         queriesView.adapter = queriesAdapter
         blockedView.adapter = blockedAdapter
 
-        viewModel.topItems.observe(viewLifecycleOwner) {
+        viewModel.topLists.observe(viewLifecycleOwner) {
+            clientAdapter.submitList(it.clients.entries.toList())
             queriesAdapter.submitList(it.queries.entries.toList())
             blockedAdapter.submitList(it.ads.entries.toList())
         }

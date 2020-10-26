@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import xyz.podd.piholestats.R
-import xyz.podd.piholestats.model.QueryData
+import xyz.podd.piholestats.model.network.QueryData
 
 class QueryAdapter: ListAdapter<QueryData, QueryViewHolder>(DiffUtilCallback) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QueryViewHolder {

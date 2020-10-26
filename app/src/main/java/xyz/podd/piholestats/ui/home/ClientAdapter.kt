@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import xyz.podd.piholestats.R
-import xyz.podd.piholestats.model.Client
-import xyz.podd.piholestats.model.ClientStats
+import xyz.podd.piholestats.model.network.Client
+import xyz.podd.piholestats.model.network.ClientStats
 
 class ClientAdapter: ListAdapter<Map.Entry<Client, ClientStats>, ClientViewHolder>(DiffUtilCallback) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ClientViewHolder {

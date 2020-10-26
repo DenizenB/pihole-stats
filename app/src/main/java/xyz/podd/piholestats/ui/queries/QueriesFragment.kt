@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import xyz.podd.piholestats.R
-import xyz.podd.piholestats.model.QueryData
+import xyz.podd.piholestats.model.network.QueryData
 import java.util.*
 import kotlin.Comparator
 

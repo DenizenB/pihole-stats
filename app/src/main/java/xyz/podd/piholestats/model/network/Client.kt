@@ -1,4 +1,4 @@
-package xyz.podd.piholestats.model
+package xyz.podd.piholestats.model.network
 
 import kotlinx.serialization.Serializable
 

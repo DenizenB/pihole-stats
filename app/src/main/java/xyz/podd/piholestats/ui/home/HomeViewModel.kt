@@ -9,11 +9,9 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import xyz.podd.piholestats.Storage
-import xyz.podd.piholestats.model.Client
-import xyz.podd.piholestats.model.ClientStats
 import xyz.podd.piholestats.model.Device
+import xyz.podd.piholestats.model.network.TopLists
 import xyz.podd.piholestats.service.Coordinator
-import xyz.podd.piholestats.service.TopItems
 
 class HomeViewModel(context: Context) : ViewModel() {
     private val storage = Storage(context)
@@ -21,11 +19,8 @@ class HomeViewModel(context: Context) : ViewModel() {
     private val _devices = MutableLiveData<List<Device>>()
     val devices: LiveData<List<Device>> = _devices
 
-    private val _topClients = MutableLiveData<Map<Client, ClientStats>>()
-    val topClients: LiveData<Map<Client, ClientStats>> = _topClients
-
-    private val _topItems = MutableLiveData<TopItems>()
-    val topItems: LiveData<TopItems> = _topItems
+    private val _topLists = MutableLiveData<TopLists>()
+    val topLists: LiveData<TopLists> = _topLists
 
     fun refresh() {
         val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
@@ -37,8 +32,7 @@ class HomeViewModel(context: Context) : ViewModel() {
             _devices.postValue(devices)
 
             val coordinator = Coordinator(devices)
-            _topClients.postValue(coordinator.getTopClients())
-            _topItems.postValue(coordinator.getTopItems())
+            _topLists.postValue(coordinator.getTopLists())
         }
     }
 }

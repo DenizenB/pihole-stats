@@ -55,7 +55,7 @@ class DeviceFragment : Fragment() {
         lblToday.visibility = View.INVISIBLE
 
         viewModel.summary.observe(viewLifecycleOwner) {
-            imgStatus.setImageDrawable(resources.getDrawable(it.drawable))
+            imgStatus.setImageDrawable(resources.getDrawable(it.drawable, null))
             lblQueries.text = it.queries
             lblBlocked.text = it.blocked
             lblToday.visibility = View.VISIBLE

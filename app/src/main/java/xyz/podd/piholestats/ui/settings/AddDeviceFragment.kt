@@ -39,7 +39,7 @@ class AddDeviceFragment : Fragment() {
         txtUrl.editText!!.onFocusChangeListener = HintOnFocus("http://192.168.1.50/admin/")
 
         btnSave.setOnClickListener {
-            var error: String? = null
+            var error: String?
 
             // Verify name
             error = when(txtName.editText!!.text.isEmpty()) {

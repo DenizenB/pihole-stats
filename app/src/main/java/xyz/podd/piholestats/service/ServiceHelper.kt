@@ -15,7 +15,7 @@ import javax.net.ssl.SSLContext
 import javax.net.ssl.SSLSession
 import javax.net.ssl.X509TrustManager
 
-@ExperimentalSerializationApi
+@OptIn(ExperimentalSerializationApi::class)
 object ServiceHelper {
 	private val client by lazy {
 		OkHttpClient.Builder()
@@ -23,6 +23,7 @@ object ServiceHelper {
 			.addInterceptor(LoggingInterceptor())
 			.build()
 	}
+
 	private val jsonFactory by lazy { Json { ignoreUnknownKeys = true }.asConverterFactory(MediaType.get("application/json")) }
 
 	fun buildService(device: Device): PiHoleService {

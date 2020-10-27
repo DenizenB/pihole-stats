@@ -1,5 +1,6 @@
 package xyz.podd.piholestats.model
 
+import android.annotation.SuppressLint
 import android.os.Parcel
 import android.os.Parcelable
 import kotlinx.serialization.Serializable
@@ -12,6 +13,7 @@ data class Device(val name: String, val url: String, val password: String, val v
     val authToken: String by lazy { password.toSHA256().toSHA256() }
     val service: PiHoleService by lazy { ServiceHelper.buildService(this) }
 
+    @SuppressLint("ParcelClassLoader")
     constructor(parcel: Parcel) : this(
         parcel.readString()!!,
         parcel.readString()!!,

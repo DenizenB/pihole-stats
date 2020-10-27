@@ -19,6 +19,7 @@ val timeFormat = SimpleDateFormat("HH:mm:ss")
 data class QueryData(
     val time: Long,
     val domain: String,
+    val client: String,
     val blocked: Boolean
 ) {
     val timeString: String
@@ -35,12 +36,13 @@ class QueryDataSerializer : KSerializer<QueryData> {
 
         val time = array[0].jsonPrimitive.content.toLong()
         val domain = array[2].jsonPrimitive.content
+        val client = array[3].jsonPrimitive.content
         val blocked = when (array[4].jsonPrimitive.content.toInt()) {
             in 2..3 -> false // 2 = forwarded, 3 = cached
             else -> true
         }
 
-        return QueryData(time, domain, blocked)
+        return QueryData(time, domain, client, blocked)
     }
 
     override fun serialize(encoder: Encoder, value: QueryData) = throw NotImplementedError()

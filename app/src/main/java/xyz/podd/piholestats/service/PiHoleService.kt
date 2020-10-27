@@ -27,4 +27,7 @@ interface PiHoleService {
 
 	@GET("api.php?getAllQueries")
 	suspend fun getQueriesByClient(@Query("client") client: String): Queries
+
+	@GET("api.php?getAllQueries")
+	suspend fun getQueriesByDomain(@Query("domain") domain: String): Queries
 }

@@ -29,4 +29,9 @@ class ServiceTest {
     fun getTopLists() = runBlocking {
         println(device.service.getTopLists())
     }
+
+    @Test
+    fun getQueriesByDomain() = runBlocking {
+        println(device.service.getQueriesByDomain("github.com").clients())
+    }
 }

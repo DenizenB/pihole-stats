@@ -5,4 +5,7 @@
     android:id="@+id/recycler_queries"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clipToPadding="false"
+    android:paddingTop="6dp"
+    android:paddingBottom="6dp"
     tools:context=".ui.queries.QueriesFragment"/>

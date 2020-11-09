@@ -29,21 +29,23 @@ class QueryAdapter: ListAdapter<QueryData, QueryViewHolder>(DiffUtilCallback) {
     }
 
     companion object {
-        const val MAX_COUNT = 14
+        const val MAX_COUNT = 12
     }
 }
 
 class QueryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     private val textDomain: TextView = view.findViewById(R.id.text_domain)
+    private val textStatus: TextView = view.findViewById(R.id.text_status)
     private val textTime: TextView = view.findViewById(R.id.text_time)
 
     fun bind(item: QueryData) {
         val status = when (item.blocked) {
-            true -> "Blocked"
-            else -> "Allowed"
+            true -> "Blocked "
+            else -> "Allowed "
         }
 
         textTime.text = item.timeString
-        textDomain.text = "$status ${item.domain}"
+        textStatus.text = status
+        textDomain.text = item.domain
     }
 }

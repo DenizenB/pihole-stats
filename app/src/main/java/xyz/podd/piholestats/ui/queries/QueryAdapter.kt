@@ -3,6 +3,7 @@ package xyz.podd.piholestats.ui.queries
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -33,19 +34,19 @@ class QueryAdapter: ListAdapter<QueryData, QueryViewHolder>(DiffUtilCallback) {
     }
 }
 
-class QueryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+class QueryViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
+    private val imageStatus: ImageView = view.findViewById(R.id.image_status)
     private val textDomain: TextView = view.findViewById(R.id.text_domain)
-    private val textStatus: TextView = view.findViewById(R.id.text_status)
     private val textTime: TextView = view.findViewById(R.id.text_time)
 
     fun bind(item: QueryData) {
-        val status = when (item.blocked) {
-            true -> "Blocked "
-            else -> "Allowed "
+        val statusIcon = when (item.blocked) {
+            true -> R.drawable.ic_blocked_24
+            else -> R.drawable.ic_allowed_24
         }
 
+        imageStatus.setImageResource(statusIcon)
         textTime.text = item.timeString
-        textStatus.text = status
         textDomain.text = item.domain
     }
 }

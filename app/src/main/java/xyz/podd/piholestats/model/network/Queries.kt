@@ -6,10 +6,11 @@ import kotlinx.serialization.Serializable
 data class Queries(
 	val data: List<QueryData>
 ) {
-	fun clients(): List<Pair<Client, Int>> =
+	val clients: List<Pair<Client, Int>>  by lazy {
 		data
 			.groupingBy { Client(it.client) }
 			.eachCount()
 			.toList()
 			.sortedByDescending { it.second }
+	}
 }

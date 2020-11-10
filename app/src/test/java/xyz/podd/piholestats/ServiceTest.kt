@@ -32,6 +32,6 @@ class ServiceTest {
 
     @Test
     fun getQueriesByDomain() = runBlocking {
-        println(device.service.getQueriesByDomain("github.com").clients())
+        println(device.service.getQueriesByDomain("github.com").clients)
     }
 }

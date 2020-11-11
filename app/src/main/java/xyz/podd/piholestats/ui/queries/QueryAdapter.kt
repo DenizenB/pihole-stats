@@ -55,7 +55,7 @@ class QueryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     private var isExpanded = false
     private var originalHeight = 48.dpToPx(view.context).toInt()
     private var expandedHeight = 90.dpToPx(view.context).toInt()
-    private val originalPadding = 12.dpToPx(view.context).toInt()
+    private val originalPadding = 24.dpToPx(view.context).toInt()
     private val expandedPadding = 0
     private val originalElevation = 2.dpToPx(view.context)
     private val expandedElevation = 4.dpToPx(view.context)

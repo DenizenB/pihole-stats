@@ -51,10 +51,11 @@ class QueryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     private val imageStatus: ImageView = view.findViewById(R.id.image_status)
     private val textDomain: TextView = view.findViewById(R.id.text_domain)
     private val textTime: TextView = view.findViewById(R.id.text_time)
+    private val textClient: TextView = view.findViewById(R.id.text_client)
 
     private var isExpanded = false
     private var originalHeight = 48.dpToPx(view.context).toInt()
-    private var expandedHeight = 90.dpToPx(view.context).toInt()
+    private var expandedHeight = 122.dpToPx(view.context).toInt()
     private val originalPadding = 24.dpToPx(view.context).toInt()
     private val expandedPadding = 0
     private val originalElevation = 2.dpToPx(view.context)
@@ -73,6 +74,7 @@ class QueryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         imageStatus.setImageResource(statusIcon)
         textTime.text = item.timeString
         textDomain.text = item.domain
+        textClient.text = item.client
 
         setCardExpanded(expand = false, animate = false)
     }

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingHorizontal="48dp">
+    android:paddingHorizontal="64dp">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card_query"
@@ -53,7 +53,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <View
                     android:id="@+id/divider"
@@ -64,12 +64,13 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="24dp">
 
                     <ImageView
                         android:id="@+id/image_time"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:srcCompat="@drawable/ic_baseline_access_time_24" />
@@ -81,10 +82,31 @@
                         android:layout_marginStart="8dp"
                         android:layout_marginEnd="8dp"
                         android:text="00:00"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintBottom_toBottomOf="@+id/image_time"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/image_time"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="@+id/image_time" />
+
+                    <ImageView
+                        android:id="@+id/image_client"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginTop="8dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/image_time"
+                        app:srcCompat="@drawable/ic_baseline_computer_24" />
+
+                    <TextView
+                        android:id="@+id/text_client"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:text="Laptop"
+                        app:layout_constraintBottom_toBottomOf="@+id/image_client"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/image_time"
+                        app:layout_constraintTop_toTopOf="@+id/image_client" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </LinearLayout>

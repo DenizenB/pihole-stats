@@ -3,16 +3,20 @@ package xyz.podd.piholestats.ui.queries
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
-import androidx.core.view.updatePadding
+import androidx.core.animation.doOnEnd
+import androidx.core.animation.doOnStart
+import androidx.core.view.*
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import xyz.podd.piholestats.R
 import xyz.podd.piholestats.dpToPx
+import xyz.podd.piholestats.getValueAnimator
 import xyz.podd.piholestats.model.network.QueryData
 
 class QueryAdapter: ListAdapter<QueryData, QueryViewHolder>(DiffUtilCallback) {
@@ -38,16 +42,22 @@ class QueryAdapter: ListAdapter<QueryData, QueryViewHolder>(DiffUtilCallback) {
     }
 }
 
-class QueryViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
+class QueryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     private val root: LinearLayout = view.findViewById(R.id.layout_query)
     private val card: CardView = view.findViewById(R.id.card_query)
+    private val layoutExpansion: View = view.findViewById(R.id.layout_expansion)
 
     private val imageStatus: ImageView = view.findViewById(R.id.image_status)
     private val textDomain: TextView = view.findViewById(R.id.text_domain)
+    private val textTime: TextView = view.findViewById(R.id.text_time)
 
     private var isExpanded = false
-    private val layoutExpansion: View = view.findViewById(R.id.layout_expansion)
-    private val textTime: TextView = view.findViewById(R.id.text_time)
+    private var originalHeight = 48.dpToPx(view.context).toInt()
+    private var expandedHeight = 90.dpToPx(view.context).toInt()
+    private val originalPadding = 12.dpToPx(view.context).toInt()
+    private val expandedPadding = 0
+    private val originalElevation = 2.dpToPx(view.context)
+    private val expandedElevation = 4.dpToPx(view.context)
 
     init {
         view.setOnClickListener { setCardExpanded(!isExpanded) }
@@ -63,21 +73,37 @@ class QueryViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
         textTime.text = item.timeString
         textDomain.text = item.domain
 
-        setCardExpanded(false)
+        setCardExpanded(expand = false, animate = false)
     }
 
-    private fun setCardExpanded(expand: Boolean) {
-        if (expand) {
-            root.updatePadding(left = 0, right = 0)
-            card.cardElevation = 4.dpToPx(view.context)
-            layoutExpansion.visibility = View.VISIBLE
+    private fun setCardExpanded(expand: Boolean, animate: Boolean = true) {
+        if (animate) {
+            val animator = getValueAnimator(
+                forward = expand,
+                duration = 300,
+                interpolator = AccelerateDecelerateInterpolator()
+            ) { progress ->
+                val padding = (originalPadding + (expandedPadding - originalPadding) * progress).toInt()
+                val elevation = originalElevation + (expandedElevation - originalElevation) * progress
+
+                root.updatePadding(left = padding, right = padding)
+                card.cardElevation = elevation
+                card.layoutParams.height = (originalHeight + (expandedHeight - originalHeight) * progress).toInt()
+                card.requestLayout()
+            }
+
+            if (expand) animator.doOnStart { layoutExpansion.isVisible = true }
+            else animator.doOnEnd { layoutExpansion.isVisible = false }
+
+            animator.start()
         } else {
-            val paddingHorizontal = 12.dpToPx(view.context).toInt()
-            root.updatePadding(left = paddingHorizontal, right = paddingHorizontal)
-            card.cardElevation = 2.dpToPx(view.context)
-            layoutExpansion.visibility = View.GONE
+            val padding = if (expand) expandedPadding else originalPadding
+            val elevation = if (expand) expandedElevation else originalElevation
+
+            root.updatePadding(left = padding, right = padding)
+            card.cardElevation = elevation
         }
 
-        this.isExpanded = expand
+        isExpanded = expand
     }
 }

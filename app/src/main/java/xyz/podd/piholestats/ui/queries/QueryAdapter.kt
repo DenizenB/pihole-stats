@@ -1,5 +1,6 @@
 package xyz.podd.piholestats.ui.queries
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +17,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import xyz.podd.piholestats.R
-import xyz.podd.piholestats.dpToPx
+import xyz.podd.piholestats.blendColors
+import xyz.podd.piholestats.dp
 import xyz.podd.piholestats.getValueAnimator
 import xyz.podd.piholestats.model.network.QueryData
 
@@ -54,12 +56,14 @@ class QueryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     private val textClient: TextView = view.findViewById(R.id.text_client)
 
     private var isExpanded = false
-    private var originalHeight = 48.dpToPx(view.context).toInt()
-    private var expandedHeight = 122.dpToPx(view.context).toInt()
-    private val originalPadding = 24.dpToPx(view.context).toInt()
-    private val expandedPadding = 0
-    private val originalElevation = 2.dpToPx(view.context)
-    private val expandedElevation = 4.dpToPx(view.context)
+    private val originalHeight = 48.dp
+    private val expandedHeight = 122.dp
+    private val originalPadding = 24.dp
+    private val expandedPadding = 4.dp
+    private val originalElevation = 2f.dp
+    private val expandedElevation = 4f.dp
+    private val originalBackground = view.resources.getColor(R.color.cardBackground, null)
+    private val expandedBackground = view.resources.getColor(R.color.cardBackgroundFocused, null)
 
     init {
         view.setOnClickListener { setCardExpanded(!isExpanded) }
@@ -83,14 +87,16 @@ class QueryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         if (animate) {
             val animator = getValueAnimator(
                 forward = expand,
-                duration = 300,
+                duration = 200,
                 interpolator = AccelerateDecelerateInterpolator()
             ) { progress ->
                 val padding = (originalPadding + (expandedPadding - originalPadding) * progress).toInt()
                 val elevation = originalElevation + (expandedElevation - originalElevation) * progress
+                val background = blendColors(originalBackground, expandedBackground, progress)
 
                 root.updatePadding(left = padding, right = padding)
                 card.cardElevation = elevation
+                card.setCardBackgroundColor(background)
                 card.layoutParams.height = (originalHeight + (expandedHeight - originalHeight) * progress).toInt()
                 card.requestLayout()
             }
@@ -102,9 +108,11 @@ class QueryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         } else {
             val padding = if (expand) expandedPadding else originalPadding
             val elevation = if (expand) expandedElevation else originalElevation
+            val background = if (expand) expandedBackground else originalBackground
 
             root.updatePadding(left = padding, right = padding)
             card.cardElevation = elevation
+            card.setCardBackgroundColor(background)
 
             layoutExpansion.isVisible = expand
             card.layoutParams.height = WRAP_CONTENT

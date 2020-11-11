@@ -12,6 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="6dp"
+        app:cardBackgroundColor="@color/cardBackground"
+        app:cardCornerRadius="4dp"
         app:cardMaxElevation="4dp"
         app:contentPadding="12dp">
 
@@ -65,7 +67,7 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingHorizontal="24dp">
+                    android:paddingHorizontal="20dp">
 
                     <ImageView
                         android:id="@+id/image_time"

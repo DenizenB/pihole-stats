@@ -3,6 +3,7 @@ package xyz.podd.piholestats.ui.queries
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -102,6 +103,10 @@ class QueryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
             root.updatePadding(left = padding, right = padding)
             card.cardElevation = elevation
+
+            layoutExpansion.isVisible = expand
+            card.layoutParams.height = WRAP_CONTENT
+            card.requestLayout()
         }
 
         isExpanded = expand

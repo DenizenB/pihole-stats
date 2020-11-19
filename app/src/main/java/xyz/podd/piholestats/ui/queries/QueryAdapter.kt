@@ -57,14 +57,12 @@ class QueryAdapter: ListAdapter<QueryData, QueryViewHolder>(DiffUtilCallback) {
         }
     }
 
-    fun collapseItem(expandedItem: QueryData) {
-        val expandedIndex = currentList.indexOf(expandedItem)
-        if (expandedIndex == -1)
-            return
+    private fun collapseItem(item: QueryData) {
+        val viewHolder = currentList.indexOf(item)
+            .takeUnless { it == -1 }
+            ?.let { recyclerView.findViewHolderForAdapterPosition(it) as? QueryViewHolder }
 
-        val expandedHolder = recyclerView.findViewHolderForAdapterPosition(expandedIndex)
-        if (expandedHolder is QueryViewHolder)
-            expandedHolder.setCardExpanded(false)
+        viewHolder?.setCardExpanded(false)
     }
 
     object DiffUtilCallback: DiffUtil.ItemCallback<QueryData>() {

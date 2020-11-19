@@ -22,6 +22,14 @@ import xyz.podd.piholestats.getValueAnimator
 import xyz.podd.piholestats.model.network.QueryData
 
 class QueryAdapter: ListAdapter<QueryData, QueryViewHolder>(DiffUtilCallback) {
+
+    lateinit var recyclerView: RecyclerView
+    var expandedItem: QueryData? = null
+
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        this.recyclerView = recyclerView
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QueryViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.list_item_query, parent, false)
         return QueryViewHolder(view)
@@ -29,7 +37,34 @@ class QueryAdapter: ListAdapter<QueryData, QueryViewHolder>(DiffUtilCallback) {
 
     override fun onBindViewHolder(holder: QueryViewHolder, position: Int) {
         val item = getItem(position)
-        holder.bind(item)
+
+        holder.bind(item, expandedItem == item)
+        holder.itemView.setOnClickListener {
+            if (expandedItem == item) {
+                // Collapse clicked item
+                holder.setCardExpanded(false)
+
+                expandedItem = null
+            } else {
+                // Expand clicked item
+                holder.setCardExpanded(true)
+
+                // Collapse previously expanded item
+                expandedItem?.let(::collapseItem)
+
+                expandedItem = item
+            }
+        }
+    }
+
+    fun collapseItem(expandedItem: QueryData) {
+        val expandedIndex = currentList.indexOf(expandedItem)
+        if (expandedIndex == -1)
+            return
+
+        val expandedHolder = recyclerView.findViewHolderForAdapterPosition(expandedIndex)
+        if (expandedHolder is QueryViewHolder)
+            expandedHolder.setCardExpanded(false)
     }
 
     object DiffUtilCallback: DiffUtil.ItemCallback<QueryData>() {
@@ -55,7 +90,6 @@ class QueryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     private val textTime: TextView = view.findViewById(R.id.text_time)
     private val textClient: TextView = view.findViewById(R.id.text_client)
 
-    private var isExpanded = false
     private val originalHeight = 48.dp
     private val expandedHeight = 122.dp
     private val originalPadding = 24.dp
@@ -65,11 +99,7 @@ class QueryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     private val originalBackground = view.resources.getColor(R.color.cardBackground, null)
     private val expandedBackground = view.resources.getColor(R.color.cardBackgroundFocused, null)
 
-    init {
-        view.setOnClickListener { setCardExpanded(!isExpanded) }
-    }
-
-    fun bind(item: QueryData) {
+    fun bind(item: QueryData, expanded: Boolean) {
         val statusIcon = when (item.blocked) {
             true -> R.drawable.ic_blocked_24
             else -> R.drawable.ic_allowed_24
@@ -80,10 +110,10 @@ class QueryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         textDomain.text = item.domain
         textClient.text = item.client
 
-        setCardExpanded(expand = false, animate = false)
+        setCardExpanded(expanded, animate = false)
     }
 
-    private fun setCardExpanded(expand: Boolean, animate: Boolean = true) {
+    fun setCardExpanded(expand: Boolean, animate: Boolean = true) {
         if (animate) {
             val animator = getValueAnimator(
                 forward = expand,
@@ -118,7 +148,5 @@ class QueryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             card.layoutParams.height = WRAP_CONTENT
             card.requestLayout()
         }
-
-        isExpanded = expand
     }
 }

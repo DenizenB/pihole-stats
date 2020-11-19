@@ -1,6 +1,5 @@
 package xyz.podd.piholestats.ui.queries
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,7 +28,8 @@ class QueryAdapter: ListAdapter<QueryData, QueryViewHolder>(DiffUtilCallback) {
     }
 
     override fun onBindViewHolder(holder: QueryViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        val item = getItem(position)
+        holder.bind(item)
     }
 
     object DiffUtilCallback: DiffUtil.ItemCallback<QueryData>() {
@@ -41,7 +41,7 @@ class QueryAdapter: ListAdapter<QueryData, QueryViewHolder>(DiffUtilCallback) {
     }
 
     companion object {
-        const val MAX_COUNT = 12
+        const val MAX_COUNT = 24
     }
 }
 

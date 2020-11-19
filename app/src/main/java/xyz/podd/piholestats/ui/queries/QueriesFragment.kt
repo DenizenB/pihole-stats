@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView
 import xyz.podd.piholestats.R
 import xyz.podd.piholestats.model.network.QueryData
 import java.util.*
-import kotlin.Comparator
 
 class QueriesFragment : Fragment() {
 
@@ -30,12 +29,17 @@ class QueriesFragment : Fragment() {
         val root = inflater.inflate(R.layout.fragment_queries, container, false)
 
         val queriesView: RecyclerView = root.findViewById(R.id.recycler_queries)
-        queriesView.layoutManager = LinearLayoutManager(requireContext())
+
+        val queriesLayoutManager = LinearLayoutManager(requireContext())
+        queriesView.layoutManager = queriesLayoutManager
 
         val queryAdapter = QueryAdapter()
         queriesView.adapter = queryAdapter
 
         viewModel.queries.observe(viewLifecycleOwner) { newQueries ->
+            val shouldScrollToBottom =
+                queriesLayoutManager.findLastCompletelyVisibleItemPosition() == queryAdapter.itemCount - 1
+
             // Merge old and new queries in a sorted set
             val queries: SortedSet<QueryData> = queryAdapter.currentList.toSortedSet(QueryComparator)
             queries.addAll(newQueries)
@@ -43,6 +47,10 @@ class QueriesFragment : Fragment() {
             // Submit queries (at most QueryAdapter.MAX_COUNT)
             val mostRecentQueries = queries.toList().takeLast(QueryAdapter.MAX_COUNT)
             queryAdapter.submitList(mostRecentQueries)
+
+            if (shouldScrollToBottom) {
+                queriesView.post { queriesView.smoothScrollToPosition(queryAdapter.itemCount - 1) }
+            }
         }
 
         return root

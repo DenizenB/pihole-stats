@@ -13,4 +13,12 @@ data class Queries(
 			.toList()
 			.sortedByDescending { it.second }
 	}
+
+	val domains: List<Pair<String, Int>> by lazy {
+		data
+			.groupingBy { it.domain }
+			.eachCount()
+			.toList()
+			.sortedByDescending { it.second }
+	}
 }
